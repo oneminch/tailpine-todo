@@ -1,6 +1,6 @@
-# AlpineJS + TailwindCSS Todo Template
+# AlpineJS + TailwindCSS Todo Boilerplate
 
-A simple boilerplate todo app UI made with AlpineJS, TailwindCSS & ViteJS for experimenting with different database technologies.
+A simple boilerplate todo UI made with AlpineJS, TailwindCSS & ViteJS for experimenting with different database technologies.
 
 [Preview](https://tailpine.vercel.app)
 
