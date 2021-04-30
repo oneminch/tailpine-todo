@@ -1,0 +1,31 @@
+{
+	"name": "tailpine-todo",
+	"description": "A simple boilerplate todo app UI made with AlpineJS, TailwindCSS & ViteJS for experimenting with different database technologies.",
+	"version": "0.0.0",
+	"author": "",
+	"license": "MIT",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.2.5",
+		"postcss": "^8.2.13",
+		"postcss-cli": "^8.3.1",
+		"tailwindcss": "^2.1.2",
+		"vite": "^2.2.3"
+	},
+	"dependencies": {
+		"alpinejs": "^2.8.2",
+		"nanoid": "^3.1.22"
+	},
+	"keywords": [
+		"tailwindcss",
+		"alpinejs",
+		"todo",
+		"vite",
+		"vitejs",
+		"vercel"
+	]
+}

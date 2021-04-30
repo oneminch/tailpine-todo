@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./style.css" />
+		<title>Alpine-Tailwind Todo UI</title>
+	</head>
+	<body>
+		<div
+			id="app"
+			class="p-8 w-full h-full absolute inset-0 bg-gray-50 dark:bg-gray-900"
+			x-data="{
+			...app()
+		}"
+			x-init="() => {
+			sortTodos();
+			$dispatch('uncache-theme', darkMode);
+			toggleTheme($el.parentNode.parentNode, darkMode);
+			$watch('darkMode', value => toggleTheme($el.parentNode.parentNode, value))
+		}"
+		>
+			<svg
+				class="text-green-500 bg-green-100 mx-auto w-20 h-20 rounded-full shadow-md p-0 mb-10"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+				></path>
+			</svg>
+
+			<div
+				class="w-full sm:w-96 mx-auto flex items-center justify-between"
+			>
+				<input
+					x-ref="taskInput"
+					@keydown.enter="addTodo($event.target.value.trim()); $event.target.value = '';"
+					class="w-10/12 h-12 shadow-md bg-white dark:bg-gray-700 dark:text-gray-100 font-semibold rounded-full px-6 mr-2 focused"
+					type="text"
+					placeholder="Enter task"
+				/>
+				<button
+					@click="addTodo($refs.taskInput.value.trim()); $refs.taskInput.value = '';"
+					class="w-12 h-12 flex-shrink-0 bg-indigo-500 text-center rounded-full focused"
+				>
+					<svg
+						class="w-6 h-6 text-gray-50 mx-auto"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+						></path>
+					</svg>
+				</button>
+			</div>
+
+			<div
+				role="list"
+				class="w-full sm:w-96 mx-auto mt-8 flex flex-col items-center justify-between"
+			>
+				<div
+					x-show.transition.opacity="todos.length === 0"
+					class="w-full text-center py-8 mx-auto my-2 rounded-md shadow-md font-bold text-gray-600 bg-white dark:text-gray-300 dark:bg-gray-700"
+				>
+					You have no tasks.
+				</div>
+				<template x-for="(todo, index) in todos" :key="index">
+					<div role="listitem" class="task focused">
+						<!-- Check Icon -->
+						<button
+							tabindex="0"
+							@click="completeTodo(index, todo.id)"
+							class="w-7 h-7 mr-4 p-0 rounded-full focused text-gray-300 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-500"
+						>
+							<svg
+								:class="{ 'completed': todo.completed }"
+								:fill="todo.completed ? '#A7F3D0' : 'none'"
+								class="w-full h-full rounded-full"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+								></path>
+							</svg>
+						</button>
+						<!-- Task Name -->
+						<p
+							x-text="todo.title"
+							:title="todo.title"
+							class="font-bold text-base capitalize truncate"
+							:class="{ 'line-through text-gray-400 dark:text-gray-400': todo.completed, 'text-gray-600 dark:text-gray-50': !todo.completed }"
+						></p>
+						<!-- Trash Icon -->
+						<button
+							tabindex="0"
+							@click="deleteTodo(index, todo.id)"
+							class="w-8 h-8 p-0.5 rounded-md focused ml-auto text-gray-300 dark:text-gray-400 hover:text-red-400 dark:hover:text-red-400"
+						>
+							<svg
+								class="w-full h-full"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+								></path>
+							</svg>
+						</button>
+					</div>
+				</template>
+			</div>
+
+			<hr
+				class="w-full sm:w-96 mx-auto my-6 border-t-2 rounded-md border-solid border-gray-200 dark:border-gray-700"
+			/>
+
+			<div
+				class="w-full sm:w-96 text-center p-4 mx-auto mt-2 mb-4 rounded-md shadow-md font-bold text-gray-600 bg-white dark:text-gray-300 dark:bg-gray-700 flex justify-between items-center"
+			>
+				<label
+					for="theme"
+					class="font-bold text-base select-none cursor-pointer"
+				>
+					Dark Mode
+				</label>
+
+				<label class="flex items-center w-14 toggle-container">
+					<input
+						id="theme"
+						class="sr-only"
+						type="checkbox"
+						:checked="darkMode"
+						x-ref="themeToggle"
+						x-on:change="darkMode = !darkMode"
+						@uncache-theme.window="$refs.themeToggle.checked = darkMode"
+					/>
+					<span
+						class="switch dark:border-gray-500 p-1 flex flex-shrink-0 items-center transition-colors bg-gray-300 dark:bg-gray-500 cursor-pointer"
+					></span>
+				</label>
+			</div>
+		</div>
+
+		<script type="module" src="/main.js"></script>
+	</body>
+</html>
