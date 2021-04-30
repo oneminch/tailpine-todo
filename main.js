@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 
 window.app = function () {
 	return {
+		newTodo: "",
 		todos: [
 			{ id: nanoid(8), title: "task 1", completed: false },
 			{ id: nanoid(8), title: "task 2", completed: true },
@@ -10,11 +11,11 @@ window.app = function () {
 			{ id: nanoid(8), title: "task 4", completed: false },
 			{ id: nanoid(8), title: "task 5", completed: true },
 		],
-		addTodo(newTask) {
-			if (!newTask) return;
+		addTodo() {
+			if (!this.newTodo.trim()) return;
 
 			this.todos.push({
-				title: newTask,
+				title: this.newTodo.trim(),
 				isDone: false,
 			});
 

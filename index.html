@@ -36,26 +36,27 @@
 				></path>
 			</svg>
 
-			<div
+			<form
+				@submit.prevent="addTodo()"
 				class="w-full sm:w-96 mx-auto flex items-center justify-between"
 			>
+				<!-- <form x-on:submit="addTodo($event.target.value.trim())"> -->
 				<input
-					x-ref="taskInput"
-					@keydown.enter="addTodo($event.target.value.trim()); $event.target.value = '';"
-					class="w-10/12 h-12 shadow-md bg-white dark:bg-gray-700 dark:text-gray-100 font-semibold rounded-full px-6 mr-2 focused"
 					type="text"
+					x-model="newTodo"
 					placeholder="Enter task"
+					class="w-10/12 h-12 shadow-md bg-white dark:bg-gray-700 dark:text-gray-100 font-semibold rounded-full px-6 mr-2 focused"
 				/>
 				<button
-					@click="addTodo($refs.taskInput.value.trim()); $refs.taskInput.value = '';"
+					type="submit"
 					class="w-12 h-12 flex-shrink-0 bg-indigo-500 text-center rounded-full focused"
 				>
 					<svg
-						class="w-6 h-6 text-gray-50 mx-auto"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
 						xmlns="http://www.w3.org/2000/svg"
+						class="w-6 h-6 text-gray-50 mx-auto"
 					>
 						<path
 							stroke-linecap="round"
@@ -65,7 +66,7 @@
 						></path>
 					</svg>
 				</button>
-			</div>
+			</form>
 
 			<div
 				role="list"
